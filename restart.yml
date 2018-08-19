@@ -1,0 +1,19 @@
+---
+# This playbook deploys a simple standalone Tomcat 7 server.
+
+ - hosts: tomcat
+   remote_user: ec2-user
+   become: yes
+   become_method: sudo
+
+   tasks: 
+     - name: Restart Tomcat
+       service:
+         name: tomcat
+         state: restarted
+     
+     - name: Wait for restart to complete
+       wait_for:
+         host: "{{ansible_default_ipv4.address}}"
+         port: 8444
+                 
